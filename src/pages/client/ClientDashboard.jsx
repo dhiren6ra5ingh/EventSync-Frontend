@@ -23,7 +23,7 @@ function ClientDashboard() {
   const [eventTasks, setEventTasks] = useState([]);
   const [activeCategory, setActiveCategory] = useState("All");
   const [compareIds, setCompareIds] = useState([]);
-
+  const [isLoading, setIsLoading] = useState(false);
   useEffect(() => {
     fetchMyEvents();
     fetchPackages();
@@ -32,6 +32,7 @@ function ClientDashboard() {
   const submitEventRequest = async (e) => {
   e.preventDefault();
   setRequestFormMsg("");
+  setIsLoading(true);
   try {
     await api.post("/api/client/request-event", {
       ...requestForm,
@@ -42,6 +43,8 @@ function ClientDashboard() {
     fetchMyEvents();
   } catch (err) {
     setRequestFormMsg(err.response?.data?.error || "Failed to submit request");
+  } finally {
+    setIsLoading(false);
   }
 };
 
@@ -260,7 +263,9 @@ const toggleCompare = (id) => {
   value={requestForm.guest_count}
   onChange={(e) => setRequestForm({ ...requestForm, guest_count: e.target.value })}
 />
-          <button type="submit">Submit request</button>
+          <button type="submit" disabled={isLoading}>
+          {isLoading ? "Submitting..." : "Submit request"}
+          </button> 
           {requestFormMsg && <p className="panel-msg">{requestFormMsg}</p>}
         </form>
 
