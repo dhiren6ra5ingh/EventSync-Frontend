@@ -376,7 +376,28 @@ function AdminDashboard() {
       showToast(err.response?.data?.error || "Failed to delete task", "error");
     }
   };
+  const handleDeleteUser = async (userId) => {
+  // Add a safety check so you don't accidentally delete someone
+    if (!window.confirm("Are you sure you want to delete this account?")) return;
 
+    try {
+      // Make sure this URL matches exactly how your backend registers the admin blueprint
+      await axios.delete(`https://eventsync-api-o0i7.onrender.com/api/admin/users/${userId}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}` // or however you store your JWT
+        }
+      });
+
+      // Update the screen instantly by filtering out the deleted user
+      // Inside handleDeleteUser:
+      setVendors(prevVendors => prevVendors.filter(vendor => vendor._id !== userId));
+      alert("Account deleted successfully!");
+
+    } catch (error) {
+      console.error("Error deleting user:", error);
+      alert("Failed to delete account.");
+    }
+  };
   const filteredEvents = events
     .filter((ev) => ev.title.toLowerCase().includes(eventSearch.toLowerCase()))
     .sort((a, b) => {
@@ -846,6 +867,15 @@ function AdminDashboard() {
                         <span className="ticket-title">{v.username}</span>
                         <span className="ticket-meta">{v.email}</span>
                       </div>
+  
+                      {/* 👇 PASTE THE BUTTON HERE 👇 */}
+                      <button 
+                        onClick={() => handleDeleteUser(v._id)}
+                        style={{ backgroundColor: '#ef4444', color: 'white', padding: '4px 12px', borderRadius: '4px', fontSize: '12px', marginLeft: 'auto' }}
+                      >
+                        Delete
+                      </button>
+                      {/* 👆 ---------------------- 👆 */}
                     </li>
                   ))}
                 </ul>
