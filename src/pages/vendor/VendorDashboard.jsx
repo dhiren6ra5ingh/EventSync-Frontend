@@ -1,15 +1,18 @@
 import { useEffect, useState } from "react";
 import api from "../../api/axiosInstance";
 import Navbar from "../../components/Navbar";
-
+import SkeletonList from "../../components/SkeletonList";
+import EmptyState from "../../components/EmptyState";
 function VendorDashboard() {
   const [tasks, setTasks] = useState([]);
   const [packages, setPackages] = useState([]);
+  const [loading, setLoading] = useState(true);
+
 
   useEffect(() => {
-    fetchTasks();
-    fetchPackages();
-  }, []);
+  Promise.all([fetchTasks(), fetchPackages()]).finally(() => setLoading(false));
+}, []);
+
 
   const fetchTasks = async () => {
     try {
@@ -46,11 +49,15 @@ function VendorDashboard() {
     { label: "tasks still pending", count: tasks.filter((t) => t.status !== "Completed").length },
   ]}
 />
+
+{loading ? (
+  <div style={{ padding: "0 28px" }}><SkeletonList rows={3} /></div>
+) : (
       <div style={{ padding: "0 28px 40px" }}>
 
         <div className="section-title">Company offers / packages</div>
 {packages.length === 0 ? (
-  <p style={{ color: "var(--ink-soft)" }}>No packages available right now.</p>
+  <EmptyState message="Nothing on offer right now" sub="Company packages will be listed here." />
 ) : (
   <ul>
     {packages.map((p) => (
@@ -73,8 +80,8 @@ function VendorDashboard() {
 
         <div className="section-title">My tasks</div>
         {tasks.length === 0 ? (
-          <p style={{ color: "var(--ink-soft)" }}>No tasks assigned yet.</p>
-        ) : (
+          <EmptyState message="No tasks assigned yet" sub="Your assigned work will show up here." />
+) : (
           <ul>
             {tasks.map((task) => (
               <li key={task._id} className="ticket-row">
@@ -100,7 +107,9 @@ function VendorDashboard() {
         )}
 
       </div>
+      )}
     </div>
+    
   );
 }
 

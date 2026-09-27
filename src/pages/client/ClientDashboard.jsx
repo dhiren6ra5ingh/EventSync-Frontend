@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import api from "../../api/axiosInstance";
 import Navbar from "../../components/Navbar";
 import DayTimeline from "../../components/DayTimeline";
+import SkeletonList from "../../components/SkeletonList";
+import EmptyState from "../../components/EmptyState";
 
 function ClientDashboard() {
   const [myEvents, setMyEvents] = useState([]);
@@ -24,10 +26,13 @@ function ClientDashboard() {
   const [activeCategory, setActiveCategory] = useState("All");
   const [compareIds, setCompareIds] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  useEffect(() => {
-    fetchMyEvents();
-    fetchPackages();
-  }, []);
+const [loading, setLoading] = useState(true);
+
+
+ useEffect(() => {
+  Promise.all([fetchMyEvents(), fetchPackages()]).finally(() => setLoading(false));
+}, []);
+  
 
   const submitEventRequest = async (e) => {
   e.preventDefault();
@@ -84,6 +89,7 @@ function ClientDashboard() {
   }
 };
 
+
 const cancelEvent = async (eventId) => {
   if (!window.confirm("Cancel this event request?")) return;
   try {
@@ -123,6 +129,9 @@ const toggleCompare = (id) => {
     { label: "confirmed events ready to track", count: myEvents.filter((ev) => ev.status === "confirmed").length },
   ]}
 />
+{loading ? (
+  <div style={{ padding: "0 28px" }}><SkeletonList rows={3} /></div>
+) : (
       <div style={{ padding: "0 28px 40px" }}>
 
         <div className="section-title">Available packages</div>
@@ -141,7 +150,7 @@ const toggleCompare = (id) => {
 </div>
 
 {packages.filter((p) => activeCategory === "All" || p.category === activeCategory).length === 0 ? (
-  <p style={{ color: "var(--ink-soft)" }}>No packages in this category right now.</p>
+  <EmptyState message="Nothing on offer right now" sub="Check back soon for new packages." />
 ) : (
   <ul>
     {packages
@@ -281,8 +290,8 @@ const toggleCompare = (id) => {
 
         <div className="section-title">My events</div>
         {myEvents.length === 0 ? (
-          <p style={{ color: "var(--ink-soft)" }}>You haven't requested any events yet.</p>
-        ) : (
+          <EmptyState message="No events yet" sub="Once you submit a request, it'll show up here." />
+) : (
           <ul>
             {myEvents.map((ev) => (
               <li key={ev._id} className="ticket-row">
@@ -342,6 +351,7 @@ const toggleCompare = (id) => {
         )}
 
       </div>
+      )}
     </div>
   );
 }
