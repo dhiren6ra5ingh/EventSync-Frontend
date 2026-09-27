@@ -112,7 +112,7 @@ function LandingPage() {
         </div>
       </Reveal> */}
 
-      <ScallopDivider />
+      {/* <ScallopDivider /> */}
 
       {/* Event types strip */}
       <Reveal>
@@ -127,6 +127,7 @@ function LandingPage() {
           </div>
         </div>
       </Reveal>
+      <ScallopDivider />
 
       {/* How it works */}
       <Reveal delay={100}>
@@ -164,7 +165,7 @@ function LandingPage() {
     </p>
   </div>
 </Reveal>
-
+<ScallopDivider />
       {/* Features */}
       <Reveal delay={150}>
         <div style={{ maxWidth: "900px", margin: "0 auto", padding: "0 24px 80px" }}>
@@ -196,7 +197,7 @@ function LandingPage() {
         </div>
       </Reveal>
 
-      <ScallopDivider />
+
 
       {/* Packages preview */}
 {packages.length > 0 && (
