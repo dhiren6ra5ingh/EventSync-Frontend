@@ -357,3 +357,37 @@ ul {
   font-size: 34px;
   color: var(--rose-deep);
 }
+
+@keyframes pulse {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 0.8; }
+}
+
+.skeleton-line {
+  height: 14px;
+  border-radius: 6px;
+  background: var(--rule);
+  animation: pulse 1.3s ease-in-out infinite;
+  margin-bottom: 8px;
+}
+
+.skeleton-row {
+  background: var(--card);
+  border-radius: 12px;
+  padding: 16px 20px;
+  margin-bottom: 14px;
+}
+
+.spinner {
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(255, 249, 245, 0.4);
+  border-top-color: #FFF9F5;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+  display: inline-block;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}

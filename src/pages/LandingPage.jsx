@@ -12,6 +12,7 @@ import weddingImg from "../assets/wedding.jpg";
 import corporateImg from "../assets/corporate.jpg";
 import birthdayImg from "../assets/birthday.jpg";
 import partyImg from "../assets/party.jpg";
+import FaqAccordion from "../components/FaqAccordion";
 function LandingPage() {
   const [packages, setPackages] = useState([]);
   const navigate = useNavigate();
@@ -41,6 +42,30 @@ function LandingPage() {
     { quote: "I could see exactly where my budget was going the whole time. No end-of-event surprises.", name: "Karan M." },
     { quote: "Our conference setup ran without a single scheduling hiccup.", name: "Priya S." },
   ];
+
+  const faqs = [
+  {
+    q: "How do I get an event started?",
+    a: "Register for a free account, then submit a request with your event's date, time, and guest count. Our team reviews it and assigns a vendor to match.",
+  },
+  {
+    q: "What if my preferred date isn't available?",
+    a: "We check every vendor's schedule automatically before confirming, so you'll know quickly if adjustments are needed — no last-minute surprises.",
+  },
+  {
+    q: "Can I see how my budget is being spent?",
+    a: "Yes. Once your event is confirmed, your dashboard shows exactly what's allocated, what's spent, and what's left, at any time.",
+  },
+  {
+    q: "Do I need to pick a package?",
+    a: "No — packages are just a starting point. You can also describe a fully custom event when you submit your request.",
+  },
+  {
+    q: "How do vendors get added to the platform?",
+    a: "Vendors are onboarded directly by our team, so every vendor you're matched with has already been vetted.",
+  },
+];
+
 
   return (
     <div style={{ background: "var(--paper)", minHeight: "100vh" }}>
@@ -126,6 +151,19 @@ function LandingPage() {
           </div>
         </div>
       </Reveal>
+{/* //ABOUT SECTION */}
+      <Reveal delay={100}>
+  <div style={{ maxWidth: "700px", margin: "0 auto", padding: "0 24px 80px", textAlign: "center" }}>
+    <div className="section-title" style={{ justifyContent: "center" }}>About us</div>
+    <p style={{ fontSize: "15px", color: "var(--ink-soft)", lineHeight: 1.7, marginTop: "16px" }}>
+      EventSync started with a simple frustration: event planning shouldn't mean
+      juggling five WhatsApp groups and hoping nothing overlaps. We built a single
+      place where clients, vendors, and our own team stay in sync — from the first
+      request to the last table cleared. Every event we run passes through the same
+      careful scheduling check, so the only thing you have to think about is enjoying the day.
+    </p>
+  </div>
+</Reveal>
 
       {/* Features */}
       <Reveal delay={150}>
@@ -241,7 +279,7 @@ function LandingPage() {
 )}
 
       {/* Testimonials — auto-rotating carousel */}
-      <Reveal delay={100}>
+      {/* <Reveal delay={100}>
         <div style={{ maxWidth: "900px", margin: "0 auto", padding: "0 24px 80px" }}>
           <div className="section-title" style={{ justifyContent: "center", textAlign: "center" }}>
             What people say
@@ -250,9 +288,20 @@ function LandingPage() {
             <TestimonialCarousel items={testimonials} />
           </div>
         </div>
-      </Reveal>
+      </Reveal> */}
 
       <ScallopDivider />
+{/* //FAQ */}
+      <Reveal delay={100}>
+  <div style={{ maxWidth: "900px", margin: "0 auto", padding: "0 24px 80px" }}>
+    <div className="section-title" style={{ justifyContent: "center", textAlign: "center" }}>
+      Frequently asked
+    </div>
+    <div style={{ marginTop: "24px" }}>
+      <FaqAccordion items={faqs} />
+    </div>
+  </div>
+</Reveal>
 
       {/* Final CTA */}
       <Reveal delay={100}>

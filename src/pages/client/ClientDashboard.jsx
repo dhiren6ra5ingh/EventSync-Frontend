@@ -84,6 +84,16 @@ function ClientDashboard() {
   }
 };
 
+const cancelEvent = async (eventId) => {
+  if (!window.confirm("Cancel this event request?")) return;
+  try {
+    await api.put(`/api/client/cancel-event/${eventId}`);
+    fetchMyEvents();
+  } catch (err) {
+    console.error(err);
+  }
+};
+
 const toggleCompare = (id) => {
   setCompareIds((prev) =>
     prev.includes(id) ? prev.filter((x) => x !== id) : prev.length < 3 ? [...prev, id] : prev
@@ -276,18 +286,24 @@ const toggleCompare = (id) => {
           <ul>
             {myEvents.map((ev) => (
               <li key={ev._id} className="ticket-row">
-                <div className="ticket-info">
-                  <span className="ticket-title">{ev.title}</span>
-                  <span className={`status-dot ${ev.status === "confirmed" ? "status-done" : "status-pending"}`}>
-                    {ev.status}
-                  </span>
-                </div>
-                {ev.status === "confirmed" && (
-                  <div className="ticket-actions">
-                    <button className="secondary" onClick={() => fetchStatus(ev._id)}>View status</button>
-                  </div>
-                )}
-              </li>
+  <div className="ticket-info">
+    <span className="ticket-title">{ev.title}</span>
+    <span className={`status-dot ${
+      ev.status === "confirmed" ? "status-done" :
+      ev.status === "cancelled" ? "status-progress" : "status-pending"
+    }`}>
+      {ev.status}
+    </span>
+  </div>
+  <div className="ticket-actions">
+    {ev.status === "confirmed" && (
+      <button className="secondary" onClick={() => fetchStatus(ev._id)}>View status</button>
+    )}
+    {(ev.status === "pending" || ev.status === "confirmed") && (
+      <button className="danger" onClick={() => cancelEvent(ev._id)}>Cancel</button>
+    )}
+  </div>
+</li>
             ))}
           </ul>
         )}
