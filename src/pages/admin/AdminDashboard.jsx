@@ -868,14 +868,14 @@ function AdminDashboard() {
                         <span className="ticket-meta">{v.email}</span>
                       </div>
   
-                      {/* 👇 PASTE THE BUTTON HERE 👇 */}
+                      
                       <button 
                         onClick={() => handleDeleteUser(v._id)}
-                        style={{ backgroundColor: '#ef4444', color: 'white', padding: '4px 12px', borderRadius: '4px', fontSize: '12px', marginLeft: 'auto' }}
+                        style={{ backgroundColor: '#C97B84', color: 'white', padding: '4px 12px', borderRadius: '4px', fontSize: '12px', marginLeft: 'auto' }}
                       >
                         Delete
                       </button>
-                      {/* 👆 ---------------------- 👆 */}
+                      
                     </li>
                   ))}
                 </ul>
